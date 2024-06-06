@@ -1,24 +1,29 @@
 'use client'
 import Image from 'next/image';
+import { useState } from 'react';
 
-const task = {id: 1, text: "Todo Test", completed: false}
+
 
 export default function Home() {
-  const tasks = []; // rewrite using states
-  const filter = 'all'; // rewrite using states
+  const [tasks, setTasks] = useState([{id: 1, text: "Todo Test", completed: false}]) // rewrite using states
+  const [task, setTask] = useState('')
+  const [completed, setCompleted] = useState(false)
 
   const handleAddTask = () => {
-    // Implement add task logic here
+    setTasks([...tasks, {id: new Date().getUTCDate, text:task, completed:false}])
+    setTask('')
   };
+  const setTaskFunc = (val) => {
+    setTask(val)
+  }
+  // const handleToggleTask = () => {
+  //   setCompleted(true)
+  // };
 
-  const handleToggleTask = () => {
-      // Implement toggle completed/uncompleted task logic here
-  };
-
-  const handleDeleteTask = () => {
-      // Implement delete task logic here
-
-  };
+  // const handleDeleteTask = () => {
+      
+  // };
+  console.log(tasks)
 
   return (
     <div className="container mx-auto p-4">
@@ -31,9 +36,11 @@ export default function Home() {
           type="text"
           className="bg-gray-800 text-white border-none rounded p-4 flex-grow"
           placeholder="What to do ?"
+          onChange={(eve) => setTaskFunc(eve.target.value)}
+          value={task}
         />
         <button
-          onClick={handleAddTask}
+          onClick={() => handleAddTask()}
           className="bg-blue-500 text-white p-4 rounded ml-4"
         >
           Add Task
@@ -47,10 +54,10 @@ export default function Home() {
             <div className="flex items-center">
               <button 
               className="w-6 h-6 my-auto mr-6"
-              onClick={() => alert("Toggle the task status")} 
+              onClick={(eve) => setCompleted(eve.target.value)} 
               >
                 <Image
-                      src={task.completed ? "/images/circle-cheked.svg" : "/images/circle.svg"}
+                      src={task.completed ? "./images/checked.svg" : "/images/n-checked.svg"}
                       alt="Task status"
                       width={30}
                       height={30}
@@ -66,11 +73,11 @@ export default function Home() {
           </li>
         </ul>
         <div className="mt-4 flex justify-between items-center text-sm text-gray-400">
-          <span> 'n' items left</span>  {/* show how many uncompleted items left */}
+          <span> {tasks.length} items left</span>  {/* show how many uncompleted items left */}
           <div>
-            <button onClick={() => alert("Show all")} className={`mr-2 ${filter === 'all' ? 'text-white' : ''}`}>All</button>
+            {/* <button onClick={() => alert("Show all")} className={`mr-2 ${filter === 'all' ? 'text-white' : ''}`}>All</button>
             <button onClick={() => alert("Show active")} className={`mr-2 ${filter === 'active' ? 'text-white' : ''}`}>Active</button>
-            <button onClick={() => alert("Show completed")} className={`${filter === 'completed' ? 'text-white' : ''}`}>Completed</button>
+            <button onClick={() => alert("Show completed")} className={`${filter === 'completed' ? 'text-white' : ''}`}>Completed</button> */}
           </div>
           <button
             onClick={() => alert("Clear completed tasks")}
